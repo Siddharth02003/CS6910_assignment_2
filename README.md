@@ -28,3 +28,49 @@ Enter the parameter you would like to change in the place of <>. The default val
 8. `--batch_size` : Batch Size: integer value (Default: 32)
 9. `--num_dense_dim` : Number of neurons in Dense Layer: integer value (Default: 256)
 10. `--learning_rate` : Learning Rate: float value (Default: 0.001)
+
+The jupyter notebook can be directly run using colab platform in a sequential manner. 
+
+<br/> The hyperparamter sweeps can be run using the following method
+```python
+do_sweep(entity_name, project_name)
+```
+where
+  * `entity_name` : Enter the wandb entity name
+  * `project_name` : Enter the wandb project name
+
+<br/>  The various hyperparameters used are :
+```python
+hyperparameters={
+    'num_dense_dim': {
+            'values': [64,256]
+        },
+        'num_filters' : {
+           'values' : [[32,32,32,32,32],[32,64,64,128,128],[128,128,64,64,32],[16,32,64,128,256]]
+        },
+      'kernel_size' : {
+         'values' : [[3,5,5,7,7], [7,7,5,3,3], [3,3,3,3,3]]
+        },
+        'dropout': {
+            'values': [0.2, 0.3, 0.4]
+        },
+        'learning_rate': {
+            'values': [1e-3, 1e-4]
+        },
+        'activation': {
+            'values': ['relu','elu','leaky_relu']
+        },
+        'batch_norm':{
+            'values': [True,False]
+        },
+        'augment': {
+            'values': [True,False]
+        },
+        'batch_size': {
+            'values': [16, 32]
+    }   
+sweep_config = {
+      'method' : 'bayes','metric' :{'name': 'validation_accuracy','goal': 'maximize'},
+      'parameters': hyperparameters
+    }
+```
